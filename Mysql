@@ -1,0 +1,6 @@
+CREATE TABLE tabla_critica (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100),
+    descripcion TEXT,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
