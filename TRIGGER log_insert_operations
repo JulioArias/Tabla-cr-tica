@@ -1,0 +1,11 @@
+DELIMITER $$
+
+CREATE TRIGGER log_insert_operations
+AFTER INSERT ON tabla_critica
+FOR EACH ROW
+BEGIN
+  INSERT INTO connection_logs (user_name, host_name, operation)
+  VALUES (CURRENT_USER(), @@hostname, 'INSERT');
+END$$
+
+DELIMITER ;
