@@ -1,0 +1,40 @@
+SHOW VARIABLES LIKE ‘log_bin’; #Vericar logs binarios habilitados
+
+SHOW BINARY LOGS; #Observar lista de logs binarios
+
+SHOW VARIABLES LIKE 'log_bin_basename'; #Verificar la ruta de los binarios
+
+
+
+//trigger
+CREATE TABLE tabla_critica (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50),
+    valor INT
+);
+
+CREATE TABLE tabla_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_name VARCHAR(50),
+    host_name VARCHAR(50),
+    operation VARCHAR(50),
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+DELIMITER //
+
+CREATE TRIGGER log_insert_operations_proyecto
+AFTER INSERT ON tabla_critica
+FOR EACH ROW
+BEGIN
+    INSERT INTO tabla_logs (user_name, host_name, operation)
+    VALUES (USER(), @@hostname, 'INSERT');
+END;
+//
+
+DELIMITER ;
+
+INSERT INTO tabla_critica (nombre, valor) VALUES ('Prueba', 100);
+INSERT INTO tabla_critica (nombre, valor) VALUES ('Test', 200);
+
+SELECT * FROM tabla_logs;
